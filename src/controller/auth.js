@@ -1,4 +1,5 @@
 const  User = require("../models/user");
+const Otp = require("../models/user")
 const  jwt = require("jsonwebtoken");
 require('dotenv').config();
 
@@ -21,36 +22,52 @@ const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 exports.signup = (req, res) => {
 
     const { name, phoneNumber, gender} = req.body
-    User.findOne({phoneNumer: phoneNumber}, (err, user) => {
+    
+    User.findOne({phoneNumber: phoneNumber}, (err, user) => {
         if(user){
             res.send({message: "User already registerd"})
         } else {
-        
-        const otp = Math.floor(100000 + Math.random() * 900000);
 
-        client.messages
-		.create({
-			body: `Your One Time Password is ${otp}`,
-			from: twilioNum,
-			to: phoneNumber
-		})
-		.then((messages) => console.log(messages))
-		.catch((err) => console.error(err));
-        
-        res.status(200).send({ phoneNumber, otp});
-                
         const user = new User({
-                name,
-                gender,
-                phoneNumber,
-                otp,
-            })
+            name,
+            phoneNumber,
+            gender
+        })
+        // user.save(
+        //     err => {
+        //     if(err) {
+        //         res.send(err)
+        //     } else {
         
+            const otp = Math.floor(100000 + Math.random() * 900000);
+            // client.messages
+            // .create({
+            // 	body: `Your One Time Password is ${otp}`,
+            // 	from: twilioNum,
+            // 	to: phoneNumber
+            // })
+            // .then((messages) => console.log(messages))
+            // .catch((err) => console.error(err));
+                    
+            const otpData = new Otp({
+                    phoneNumber: phoneNumber,
+                    otp: otp,
+                    expireIn: new Date().getTime() + 300*1000,
+                    name
+            }) 
+            otpData.save(err => {
+                if(err)  {
+                    res.send(err)
+                } else {
+                    res.status(200).send({ phoneNumber, otp, });
+            }
+    
+            })
+            }
+     
+    
+    })
         }
-})
-
-}
-
 
 
 // exports.signin = (req, res) => {
