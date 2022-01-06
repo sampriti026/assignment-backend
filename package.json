@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.server.js",
+  "scripts": {
+    "start": "nodemon ./src/index.server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
+    "fast-two-sms": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.5",
+    "mongoose-validator": "^2.1.0",
+    "nodemon": "^2.0.15",
+    "sendotp": "^1.2.9",
+    "twilio": "^3.72.0"
+  }
+}
