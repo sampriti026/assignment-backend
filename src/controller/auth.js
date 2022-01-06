@@ -16,52 +16,41 @@ const twilioNum = process.env.TWILIO_PHONE_NUMBER;
 const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
+
+
 exports.signup = (req, res) => {
 
-User.findOne({phoneNumber: req.body.phoneNumber}).exec((error, user) => {
-    
-    if (user) return res.status(400).json({
-        message: 'User already registered'
-    });
+    const { name, phoneNumber, gender} = req.body
+    User.findOne({phoneNumer: phoneNumber}, (err, user) => {
+        if(user){
+            res.send({message: "User already registerd"})
+        } else {
+        
+        const otp = Math.floor(100000 + Math.random() * 900000);
 
-    const {
-        name,  
-        phoneNumber,
-        gender,
-    } = req.body;
-
-    const _user = new User({ 
-        name, 
-        phoneNumber, 
-        gender,  
-        username: Math.random().toString(),
-        otp: Math.floor(100000 + Math.random() * 900000),
-        ttl: 2 * 60 * 1000,
-        expires: Date.now() + ttl
-});
-
-_user.save((error, data) => {
-    if(error){
-        return res.status(400).json({
-            message: 'Something went wrong'
-        });
-    }
-});
-
-client.messages
+        client.messages
 		.create({
-			body: `Your One Time Login Password For CFM is ${otp}`,
+			body: `Your One Time Password is ${otp}`,
 			from: twilioNum,
 			to: phoneNumber
 		})
 		.then((messages) => console.log(messages))
 		.catch((err) => console.error(err));
-    
-        res.status(200).send({ phoneNumber, otp }); 
-
-});
+        
+        res.status(200).send({ phoneNumber, otp});
+                
+        const user = new User({
+                name,
+                gender,
+                phoneNumber,
+                otp,
+            })
+        
+        }
+})
 
 }
+
 
 
 // exports.signin = (req, res) => {
@@ -92,7 +81,5 @@ client.messages
 //     return res.status(400).json({ message: "Something went wrong" });
 //   }
 // });
-// };
-
-
+// }
 

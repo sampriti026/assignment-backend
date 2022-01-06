@@ -20,6 +20,7 @@ const authRoutes = require("./routes/auth");
 //environment variable
 env.config();
 
+app.use(express.json())
 
 app.use("/api", authRoutes);
 
