@@ -5,9 +5,9 @@ exports.validateSignupRequest = [
     check('name')
     .notEmpty()
     .withMessage('Name is required'),
-    check('gender')
-    .notEmpty()
-    .withMessage('Gender is required'),
+    // check('gender')
+    // .notEmpty()
+    // .withMessage('Gender is required'),
     check('phoneNumber').isNumeric()
     .withMessage('Phone Number is required'),
 ];

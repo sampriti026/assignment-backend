@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const otpSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -23,8 +23,9 @@ const userSchema = new mongoose.Schema(
     expireIn: {
       type: String,
     }
+
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Otp", otpSchema);

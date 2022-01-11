@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const env = require("dotenv");
+const bodyParser = require("body-parser")
 const app = express();
-
+const cors = require("cors");
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 //const client = require('twilio')(accountSid, authToken);
-
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const JWT_AUTH_TOKEN = process.env.JWT_AUTH_TOKEN;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 
@@ -15,13 +16,18 @@ const sms = process.env.SMS_SECRET;
 //routes
 const authRoutes = require("./routes/auth");
 
-
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 
 //environment variable
 env.config();
 
 app.use(express.json())
-
+app.use(cors())
 app.use("/api", authRoutes);
 
 
